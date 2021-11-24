@@ -8,6 +8,8 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
+import static jm.task.core.jdbc.util.Util.getSessionFactory;
+
 public class UserDaoHibernateImpl implements UserDao {
     public UserDaoHibernateImpl() {
 
@@ -18,7 +20,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         Transaction transaction = null;
 
-        try (Session session = Util.getSessionFactory().openSession()) {
+        try (Session session = getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
             Query query = session.createSQLQuery("CREATE TABLE IF NOT EXISTS users " +
@@ -27,13 +29,23 @@ public class UserDaoHibernateImpl implements UserDao {
                     "age TINYINT NOT NULL)").addEntity(User.class);
             query.executeUpdate();
             transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
         }
-
     }
 
     @Override
     public void dropUsersTable() {
+        try (Session session = getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
 
+            Query query = session.createSQLQuery("DROP TABLE IF EXISTS users").addEntity(User.class);
+            query.executeUpdate();
+            transaction.commit();
+        }
     }
 
     @Override
