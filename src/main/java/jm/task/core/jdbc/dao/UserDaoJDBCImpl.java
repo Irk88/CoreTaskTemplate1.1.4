@@ -5,12 +5,14 @@ import jm.task.core.jdbc.model.User;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+
+    UserDaoHibernateImpl userDaoHibernate = new UserDaoHibernateImpl();
     public UserDaoJDBCImpl() {
 
     }
 
     public void createUsersTable() {
-
+        userDaoHibernate.createUsersTable();
     }
 
     public void dropUsersTable() {
