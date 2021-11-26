@@ -13,5 +13,12 @@ public class Main {
         UserDao userDao = new UserDaoHibernateImpl();
 
         userDao.createUsersTable();
+        userDao.saveUser("Ivan", "Petrov", (byte) 25);
+        userDao.saveUser("Maria", "Semenova", (byte) 35);
+        userDao.saveUser("Oleg", "Olegovich", (byte) 45);
+        userDao.saveUser("Stanislav", "Kruglov", (byte) 43);
+        userDao.getAllUsers();
+        userDao.cleanUsersTable();
+        userDao.dropUsersTable();
     }
 }
